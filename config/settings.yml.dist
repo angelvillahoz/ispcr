@@ -1,0 +1,21 @@
+# Configuration for the isPCR endpoint.
+ispcr:
+    url: 'ispcr_server:80'
+
+# Credentials for the isPCR database.
+database:
+    host: 'mariadb_server'
+    name: 'ispcr'
+    user: 'ispcr'
+    password: '<MYSQL_PASSWORD>'
+
+# Configuration that affects the application as a whole.
+general:
+    ispcr_version: '1.0.0'
+    site_base_url: '<ISPCR_BASE_URL>'
+    site_base_dir: '/var/www/'
+    site_auth_realm: '<SITE_AUTH_REALM>'
+
+# The URLs for the REST API.
+rest:
+    base_url: 'api'
