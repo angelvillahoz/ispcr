@@ -5,6 +5,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         libkrb5-dev \
         libpng-dev \
+        patch \
         unzip && \
     go get -u github.com/gorilla/mux
 
@@ -17,16 +18,16 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a ./cmd/main.go
 
 RUN mkdir /tmp/isPcr && \
     unzip -q ./assets/isPcr.zip -d /tmp/isPcr/ && \
-    #cp /tmp/blat/blatSrc/blat/makefile /tmp/blat/blatSrc/blat/makefile.original && \
-    #patch /tmp/blat/blatSrc/blat/makefile.original -i ./assets/static-makefile.patch -o /tmp/blat/blatSrc/blat/makefile && \
+    cp /tmp/isPcr/isPcrSrc/isPcr/isPcr/makefile /tmp/isPcr/isPcrSrc/isPcr/isPcr/makefile.original && \
+    patch /tmp/isPcr/isPcrSrc/isPcr/isPcr/makefile.original -i ./assets/static-makefile.patch -o /tmp/isPcr/isPcrSrc/isPcr/isPcr/makefile && \
     mkdir -p /root/bin/x86_64 && \
     (cd /tmp/isPcr/isPcrSrc && MACHTYPE=x86_64 make HG_WARN="") && \
-    mv /root/bin/x86_64/ispcr ./
+    mv /root/bin/x86_64/isPcr ./
 
 FROM alpine:3.12
 
 COPY --from=0 /go/src/main ./cmd/ispcrserver
-COPY --from=0 /go/src/ispcr /usr/local/bin
+COPY --from=0 /go/src/isPcr /usr/local/bin
 EXPOSE 80
 VOLUME ["./assets"]
 

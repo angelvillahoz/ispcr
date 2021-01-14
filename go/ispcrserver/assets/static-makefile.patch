@@ -1,0 +1,8 @@
+3c3
+< L = -lm $(SOCKETLIB)
+---
+> L = -lm -ldl $(SOCKETLIB) -static-libgcc
+10c10
+< 	${CC} ${COPT} -o ${HOME}/bin/${MACHTYPE}/isPcr $O ${MYLIBS} $L
+---
+> 	${CC} ${COPT} -o ${HOME}/bin/${MACHTYPE}/isPcr $O -static $(MYLIBS) $L
