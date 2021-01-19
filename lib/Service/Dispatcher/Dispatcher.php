@@ -1,8 +1,8 @@
 <?php
-namespace CCR\BLAT\Service\Dispatcher;
+namespace CCR\ISPCR\Service\Dispatcher;
 
-// BLAT libraries with namespaces
-use CCR\BLAT\Service\Message\{CommandInterface, QueryInterface, QueryResult};
+// ISPCR libraries with namespaces
+use CCR\ISPCR\Service\Message\{CommandInterface, QueryInterface, QueryResult};
 /**
  * A dispatcher that resolves and dispatches a command or query to its handler.
  * The dispatcher is intended to be wrapped within one or more middlewares

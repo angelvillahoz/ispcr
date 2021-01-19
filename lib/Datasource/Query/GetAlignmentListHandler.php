@@ -1,10 +1,10 @@
 <?php
-namespace CCR\BLAT\Datasource\Query;
+namespace CCR\ISPCR\Datasource\Query;
 
-// BLAT libraries with namespaces
-use CCR\BLAT\Datasource\Query\GetAlignmentList;
-use CCR\BLAT\Datasource\Service\AlignmentMatcher;
-use CCR\BLAT\Service\Message\QueryResult;
+// ISPCR libraries with namespaces
+use CCR\ISPCR\Datasource\Query\GetAlignmentList;
+use CCR\ISPCR\Datasource\Service\AlignmentMatcher;
+use CCR\ISPCR\Service\Message\QueryResult;
 class GetAlignmentListHandler
 {
     private $alignmentMatcher;
@@ -18,18 +18,19 @@ class GetAlignmentListHandler
         if ( ($getAlignmentList->getSpeciesShortName() !== "") &&
             ($getAlignmentList->getGenomeAssemblyReleaseVersion() !== "") &&
             ($getAlignmentList->getMinimumIdentityPercentage() !== "") &&
-            ($getAlignmentList->getSequence() !== "") &&
+            ($getAlignmentList->getForwardPrime() !== "") &&
+            ($getAlignmentList->getReversePrime() !== "") &&
             ($getAlignmentList->getOutputFormat() !== "") ) {
             $alignmentList = $this->alignmentMatcher->get(
                 $getAlignmentList->getSpeciesShortName(),
                 $getAlignmentList->getGenomeAssemblyReleaseVersion(),
-                $getAlignmentList->getMinimumIdentityPercentage(),
-                $getAlignmentList->getSequence(),
+                $getAlignmentList->getForwardPrime(),
+                $getAlignmentList->getReversePrime(),
                 $getAlignmentList->getOutputFormat()
             );
             $coordinates = array();            
             switch ($getAlignmentList->getOutputFormat()) {
-                case "blast9":
+                case "fa":
                     $coordinates = preg_replace(
                         "/[\r\n]+/",
                         "<br />",
@@ -40,7 +41,7 @@ class GetAlignmentListHandler
                         )
                     );
                     break;
-                case "plsx":
+                case "pls":
                     foreach ( $alignmentList as $rawAlignment ) {
                         $alignment = array(
                             "chromosome"    => $rawAlignment->chromosomeName,

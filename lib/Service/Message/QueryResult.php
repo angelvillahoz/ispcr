@@ -1,5 +1,5 @@
 <?php
-namespace CCR\BLAT\Service\Message;
+namespace CCR\ISPCR\Service\Message;
 
 // Standard PHP Libraries (SPL)
 use JsonSerializable, RuntimeException;

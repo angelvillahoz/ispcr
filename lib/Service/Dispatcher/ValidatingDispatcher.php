@@ -1,13 +1,13 @@
 <?php
-namespace CCR\BLAT\Service\Dispatcher;
+namespace CCR\ISPCR\Service\Dispatcher;
 
 // Standard PHP Libraries (SPL)
 use JsonSerializable, ReflectionClass;
 // Third-party libraries
 use League\JsonGuard\Validator;
-// BLAT libraries with namespaces
-use CCR\BLAT\Service\Exception\InvalidMessageException;
-use CCR\BLAT\Service\Message\{CommandInterface, QueryInterface, QueryResult};
+// ISPCR libraries with namespaces
+use CCR\ISPCR\Service\Exception\InvalidMessageException;
+use CCR\ISPCR\Service\Message\{CommandInterface, QueryInterface, QueryResult};
 /**
  * Dispatcher decorator that validates a command or query before dispatching it.
  * The command or query is validated against an JSON schema (for more details,

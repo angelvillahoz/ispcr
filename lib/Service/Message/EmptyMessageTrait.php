@@ -1,5 +1,5 @@
 <?php
-namespace CCR\BLAT\Service\Message;
+namespace CCR\ISPCR\Service\Message;
 
 // Third-party libraries
 use Psr\Http\Message\ServerRequestInterface;

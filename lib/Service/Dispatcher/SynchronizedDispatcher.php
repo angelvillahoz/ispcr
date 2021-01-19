@@ -1,11 +1,11 @@
 <?php
-namespace CCR\BLAT\Service\Dispatcher;
+namespace CCR\ISPCR\Service\Dispatcher;
 
 // Third-party libraries
 use ParagonIE\EasyDB\EasyDB;
-// BLAT libraries with namespaces
-use CCR\BLAT\Service\Exception\SynchronizationException;
-use CCR\BLAT\Service\Message\{CommandInterface, QueryInterface, QueryResult};
+// ISPCR libraries with namespaces
+use CCR\ISPCR\Service\Exception\SynchronizationException;
+use CCR\ISPCR\Service\Message\{CommandInterface, QueryInterface, QueryResult};
 /**
  * Dispatcher decorator for synchronizing a command handler. Ensures that only
  * one instance of that handler is being processed at a time. The function

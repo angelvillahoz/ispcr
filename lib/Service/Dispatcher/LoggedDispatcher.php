@@ -1,12 +1,12 @@
 <?php
-namespace CCR\BLAT\Service\Dispatcher;
+namespace CCR\ISPCR\Service\Dispatcher;
 
 // Standard PHP Libraries (SPL)
 use Throwable;
 // Third-party libraries
 use Psr\Log\LoggerInterface;
-// BLAT libraries with namespaces
-use CCR\BLAT\Service\Message\{CommandInterface, QueryInterface, QueryResult};
+// ISPCR libraries with namespaces
+use CCR\ISPCR\Service\Message\{CommandInterface, QueryInterface, QueryResult};
 /**
  * Dispatcher decorator that logs the command or query before dispatching to the
  * next dispatcher.

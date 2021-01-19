@@ -1,12 +1,12 @@
 <?php
-namespace CCR\BLAT\Middleware;
+namespace CCR\ISPCR\Middleware;
 
 // Standard PHP Libraries (SPL)
 use Throwable;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-// BLAT libraries with namespaces
-use CCR\BLAT\Service\Message\ErrorResult;
+// ISPCR libraries with namespaces
+use CCR\ISPCR\Service\Message\ErrorResult;
 /**
  * Middleware for sending error messages in the response for debugging
  * purposes.

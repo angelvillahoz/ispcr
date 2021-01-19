@@ -1,8 +1,8 @@
 <?php
-namespace CCR\BLAT\Service\Dispatcher;
+namespace CCR\ISPCR\Service\Dispatcher;
 
-// BLAT libraries with namespaces
-use CCR\BLAT\Service\Exception\HandlerNotFoundException;
+// ISPCR libraries with namespaces
+use CCR\ISPCR\Service\Exception\HandlerNotFoundException;
 /**
  * Interface for resolving the callable to handle a message.
  */

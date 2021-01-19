@@ -7,26 +7,33 @@ class Spinner extends React.Component {
           margin: 'auto',
           display: 'block'
         }}
-        alt='Checking any sequence match...'
+        alt='Checking any forward and reverse primes match...'
       />
     );
   }
 }
 
-function validate(sequence) {
+function validate(forwardPrime, reversePrime) {
   const errorsList = [];
-  if (sequence.length < 20) {
-    errorsList.push('The sequence is too short');
+  if (forwardPrime.length < 15) {
+    errorsList.push('The forward prime is too short');
   } else {
-    if (sequence.match(/[^ACGTacgt]/gm)) {
-      errorsList.push('The sequence has invalid character(s): ' + sequence.match(/[^ACGTacgt]/gm));
+    if (forwardPrime.match(/[^ACGTacgt]/gm)) {
+      errorsList.push('The forward prime has invalid character(s): ' + forwardPrime.match(/[^ACGTacgt]/gm));
+    }
+  }
+  if (reversePrime.length < 15) {
+    errorsList.push('The reverse prime is too short');
+  } else {
+    if (reversePrime.match(/[^ACGTacgt]/gm)) {
+      errorsList.push('The reverse prime has invalid character(s): ' + reversePrime.match(/[^ACGTacgt]/gm));
     }
   }
 
   return errorsList;
 }
 
-class BlatForm extends React.Component {
+class IsPcrForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,8 +41,8 @@ class BlatForm extends React.Component {
       selectedSpeciesScientificName: 'Drosophila melanogaster (dmel)',
       genomeAssemblyReleaseVersions: [],
       selectedGenomeAssemblyReleaseVersion: 'dm6',
-      minimumIdentityPercentage: '95',
-      sequence: '',
+      forwardPrime: 'GCCGGTTAGTGGTCCAAATA',
+      reversePrime: 'AGCCACCGATGAAACACGAT',
       loading: false,
       errors: []
     };
@@ -46,25 +53,40 @@ class BlatForm extends React.Component {
   componentDidMount() {
     this.setState({
       speciesScientificNames: [
-        { name: 'Aedes aegypti (aaeg)', genomeAssemblyReleaseVersions: 
-          [ { name: 'aaeg5' } ]
+        { 
+          name: 'Aedes aegypti (aaeg)',
+          genomeAssemblyReleaseVersions: [ 
+            { name: 'aaeg5' }
+          ]
         },
-        { name: 'Anopheles gambiae (agam)', genomeAssemblyReleaseVersions:
-          [ { name: 'agam4' } ]
+        { 
+          name: 'Anopheles gambiae (agam)',
+          genomeAssemblyReleaseVersions: [
+            { name: 'agam4' }
+          ]
         },
-        { name: 'Drosophila melanogaster (dmel)', genomeAssemblyReleaseVersions:
-          [ { name: 'dm6'}, 
+        { 
+          name: 'Drosophila melanogaster (dmel)',
+          genomeAssemblyReleaseVersions: [
+            { name: 'dm6'}, 
             { name: 'dm3'},
             { name: 'dm2'},
-            { name: 'dm1'} ] },
-        { name: 'Tribolium castaneum (tcas)', genomeAssemblyReleaseVersions:
-          [ { name: 'tcas5.2' } ] } 
+            { name: 'dm1'}
+          ]
+        },
+        {
+          name: 'Tribolium castaneum (tcas)',
+          genomeAssemblyReleaseVersions: [
+            { name: 'tcas5.2' }
+          ]
+        } 
       ],
       genomeAssemblyReleaseVersions: [
         { name: 'dm6'}, 
         { name: 'dm3'},
         { name: 'dm2'},
-        { name: 'dm1'}]
+        { name: 'dm1'}
+      ]
     });
   }
 
@@ -80,7 +102,10 @@ class BlatForm extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const errors = validate(this.state.sequence);
+    const errors = validate(
+        this.state.forwardPrime,
+        this.state.reversePrime
+    );
     if (errors.length > 0) {
       this.setState({ errors: errors });
       this.setState({ list: ''});
@@ -130,8 +155,8 @@ class BlatForm extends React.Component {
     }
     const {errors} = this.state;
     return ( 
-      <div className="BlatForm">
-        <p>BLAT server</p>
+      <div className="IsPcrForm">
+        <p>In-Silico PCR server</p>
         <div>
           <form onSubmit={this.handleSubmit}>
             <label>Species Scientific Name:&nbsp;</label>
@@ -148,28 +173,24 @@ class BlatForm extends React.Component {
 						  })}
 					  </select><br />
             <br />
-            <label>Minimum Identity Percentage:&nbsp;</label>
-            <br />
-            <input type="text"
-                   id="minimumIdentityPercentageId"
-                   name="minimumIdentityPercentage"
-                   size="1"
-                   required
-                   title="Only between 0.01% as minimum and 100.00% as maximum with two digits after the decimal point"
-                   pattern="^([0-9]\.[0-9][0-9]{0,1}|[1-9][0-9]{0,1}|[1-9][0-9]\.[0-9][0-9]{0,1}|100|100\.0{1,2})$"
-                   value={this.state.minimumIdentityPercentage}
-                   onChange={e => this.setState({ minimumIdentityPercentage: e.target.value })}/>
-            <label>%</label><br />
-            <br />
-            <label>Sequence:&nbsp;</label><br />
-            <textarea id="sequenceId"
-                      name="sequence"
+            <label>Forward Prime:&nbsp;</label><br />
+            <textarea id="forwardPrimeId"
+                      name="forwardPrime"
                       required
-                      rows="10"
+                      rows="3"
                       cols="100"
-                      value={this.state.sequence}
-                      onChange={e => this.setState({ sequence: e.target.value })}></textarea><br />
+                      value={this.state.forwardPrime}
+                      onChange={e => this.setState({ forwardPrime: e.target.value })}></textarea><br />
             <br />
+            <label>Reverse Prime:&nbsp;</label><br />
+            <textarea id="reversePrimeId"
+                      name="reversePrime"
+                      required
+                      rows="3"
+                      cols="100"
+                      value={this.state.reversePrime}
+                      onChange={e => this.setState({ reversePrime: e.target.value })}></textarea><br />
+            <br />            
             <input type="submit"
                    value="Submit" /><br />
             <br />

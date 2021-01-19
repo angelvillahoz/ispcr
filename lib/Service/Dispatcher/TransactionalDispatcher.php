@@ -1,10 +1,10 @@
 <?php
-namespace CCR\BLAT\Service\Dispatcher;
+namespace CCR\ISPCR\Service\Dispatcher;
 
 // Third-party libraries
 use ParagonIE\EasyDB\EasyDB;
-// BLAT libraries with namespaces
-use CCR\BLAT\Service\Message\{CommandInterface, QueryInterface, QueryResult};
+// ISPCR libraries with namespaces
+use CCR\ISPCR\Service\Message\{CommandInterface, QueryInterface, QueryResult};
 /**
  * Dispatcher decorator for wrapping a command handler within a SQL transaction.
  * Any actions against the database taken by the dispatched command will be

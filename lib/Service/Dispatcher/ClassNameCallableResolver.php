@@ -1,10 +1,10 @@
 <?php
-namespace CCR\BLAT\Service\Dispatcher;
+namespace CCR\ISPCR\Service\Dispatcher;
 
 // Third-party libraries
 use Psr\Container\ContainerInterface;
-// BLAT libraries with namespaces
-use CCR\BLAT\Service\Exception\HandlerNotFoundException;
+// ISPCR libraries with namespaces
+use CCR\ISPCR\Service\Exception\HandlerNotFoundException;
 /**
  * Callable resolver that uses a dependency injection container to resolve the
  * callable based on the class name of the message object.

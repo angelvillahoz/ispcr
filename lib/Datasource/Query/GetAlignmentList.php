@@ -1,11 +1,11 @@
 <?php
-namespace CCR\BLAT\Datasource\Query;
+namespace CCR\ISPCR\Datasource\Query;
 
 // Third-party libraries
 use Psr\Http\Message\ServerRequestInterface;
-// BLAT libraries with namespaces
-use CCR\BLAT\Service\Exception\InvalidMessageException;
-use CCR\BLAT\Service\Message\QueryInterface;
+// ISPCR libraries with namespaces
+use CCR\ISPCR\Service\Exception\InvalidMessageException;
+use CCR\ISPCR\Service\Message\QueryInterface;
 class GetAlignmentList implements QueryInterface
 {
     public static function fromRequest(ServerRequestInterface $serverRequestInterface): self
@@ -13,19 +13,19 @@ class GetAlignmentList implements QueryInterface
         $parsedBody = $serverRequestInterface->getParsedBody();
         if ( isset($parsedBody["selectedSpeciesScientificName"]) &&
             isset($parsedBody["selectedGenomeAssemblyReleaseVersion"]) &&
-            isset($parsedBody["minimumIdentityPercentage"]) &&
-            isset($parsedBody["sequence"]) ) {
+            isset($parsedBody["forwardPrime"]) &&
+            isset($parsedBody["reversePrime"])) {
             $speciesShortName = explode(")", explode("(", $parsedBody["selectedSpeciesScientificName"])[1])[0];
             $genomeAssemblyReleaseVersion = $parsedBody["selectedGenomeAssemblyReleaseVersion"];
-            $minimumIdentityPercentage = $parsedBody["minimumIdentityPercentage"];
-            $sequence = $parsedBody["sequence"];
-            $outputFormat = "blast9";
+            $forwardPrime = $parsedBody["forwardPrime"];
+            $reversePrime = $parsedBody["reversePrime"];
+            $outputFormat = "fa";
 
             return new self(
                 $speciesShortName,
                 $genomeAssemblyReleaseVersion,
-                $minimumIdentityPercentage,
-                $sequence,
+                $forwardPrime,
+                $reversePrime,
                 $outputFormat
             );
         }
@@ -35,21 +35,21 @@ class GetAlignmentList implements QueryInterface
 
     private $speciesShortName;
     private $genomeAssemblyReleaseVersion;
-    private $minimumIdentityPercentage;
-    private $sequence;
+    private $forwardPrime;
+    private $reversePrime;
     private $outputFormat;
 
     public function __construct(
         string $speciesShortName,
         string $genomeAssemblyReleaseVersion,
-        string $minimumIdentityPercentage,
-        string $sequence,
+        string $forwardPrime,
+        string $reversePrime,
         string $outputFormat
     ) {
         $this->speciesShortName = $speciesShortName;
         $this->genomeAssemblyReleaseVersion = $genomeAssemblyReleaseVersion;
-        $this->minimumIdentityPercentage = $minimumIdentityPercentage;
-        $this->sequence = $sequence;
+        $this->forwardPrime = $forwardPrime;
+        $this->reversePrime = $reversePrime;
         $this->outputFormat = $outputFormat;
     }
 
@@ -63,14 +63,14 @@ class GetAlignmentList implements QueryInterface
         return $this->genomeAssemblyReleaseVersion;
     }
 
-    public function getMinimumIdentityPercentage(): string
+    public function getForwardPrime(): string
     {
-        return $this->minimumIdentityPercentage;
+        return $this->forwardPrime;
     }
 
-    public function getSequence(): string
+    public function getReversePrime(): string
     {
-        return $this->sequence;
+        return $this->reversePrime;
     }
 
     public function getOutputFormat(): string

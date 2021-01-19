@@ -1,5 +1,5 @@
 <?php
-namespace CCR\BLAT\Service\Message;
+namespace CCR\ISPCR\Service\Message;
 
 /**
  * A generic command DTO that holds a batch of commands.

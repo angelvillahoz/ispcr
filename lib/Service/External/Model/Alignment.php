@@ -1,8 +1,8 @@
 <?php
-namespace CCR\BLAT\Service\External\Model;
+namespace CCR\ISPCR\Service\External\Model;
 
 /**
- * Model representing an alignment returned from a BLAT query.
+ * Model representing an alignment returned from a ISPCR query.
  */
 class Alignment
 {
@@ -47,7 +47,7 @@ class Alignment
         /**
          * Note that UCSC blat coordinates are interbase (0-based) and GFF
          * format requires 1-based coordinates so correct that here.
-         * Only add +1 to the start coordinate - BLAT psl coordinates,
+         * Only add +1 to the start coordinate - ISPCR psl coordinates,
          * like most of UCSC data, is half-open: 0-base for start, 1-base for end.
          * Some file formats such as GFF requires 1-based so a conversion may
          * need to be made on export.
@@ -66,7 +66,7 @@ class Alignment
     /**
      * Calculates the accuracy score of the alignment.
      * The calculated score is based on a formula discussed on page 16 of the paper
-     * 'Using BLAT to Find Sequence Similarity in Closely Related Genomes':
+     * 'Using ISPCR to Find Sequence Similarity in Closely Related Genomes':
      * https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4101998/pdf/nihms572788.pdf
      * @param int $matchesNumber Number of matches.
      * @param int $repeatMatchesNumber Number of multiple matches.

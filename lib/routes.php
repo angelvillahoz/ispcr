@@ -8,7 +8,7 @@ $c = $app->getContainer();
 // datasource
 // -----------------------------------------------------------------------------
 $app->post("/search", function ($request, $response, $args) {
-    $query = CCR\BLAT\Datasource\Query\GetAlignmentList::fromRequest($request);
+    $query = CCR\ISPCR\Datasource\Query\GetAlignmentList::fromRequest($request);
     $results = $this->get("dispatcher")->request($query);
     return $response->withJson($results);
 })->add($container->get("debug-middleware"));

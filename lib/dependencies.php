@@ -10,9 +10,9 @@ $container["config"] = function () {
     return $GLOBALS["options"];
 };
 // data sources
-$container["blat"] = function ($c) {
-    return new CCR\BLAT\Service\External\BlatDataSource(
-        new GuzzleHttp\Client(["base_uri" => $c->get("config")->blat->url])
+$container["ispcr"] = function ($c) {
+    return new CCR\ISPCR\Service\External\IsPcrDataSource(
+        new GuzzleHttp\Client(["base_uri" => $c->get("config")->ispcr->url])
     );
 };
 $container["easydb"] = function ($c) {
@@ -51,12 +51,12 @@ $container["pdo"] = function ($c) {
 };
 // dispatcher
 $container["dispatcher"] = function ($c) {
-    return new CCR\BLAT\Service\Dispatcher\LoggedDispatcher(
-        new CCR\BLAT\Service\Dispatcher\ValidatingDispatcher(
-            new CCR\BLAT\Service\Dispatcher\SynchronizedDispatcher(
-                new CCR\BLAT\Service\Dispatcher\TransactionalDispatcher(
-                    new CCR\BLAT\Service\Dispatcher\Dispatcher(
-                        new CCR\BLAT\Service\Dispatcher\ClassNameCallableResolver($c)
+    return new CCR\ISPCR\Service\Dispatcher\LoggedDispatcher(
+        new CCR\ISPCR\Service\Dispatcher\ValidatingDispatcher(
+            new CCR\ISPCR\Service\Dispatcher\SynchronizedDispatcher(
+                new CCR\ISPCR\Service\Dispatcher\TransactionalDispatcher(
+                    new CCR\ISPCR\Service\Dispatcher\Dispatcher(
+                        new CCR\ISPCR\Service\Dispatcher\ClassNameCallableResolver($c)
                     ),
                     $c->get("easydb")
                 ),
@@ -68,7 +68,7 @@ $container["dispatcher"] = function ($c) {
 };
 // logger
 $container["logger"] = function () {
-    $logger = new Monolog\Logger("BLAT");
+    $logger = new Monolog\Logger("ISPCR");
     $handler = new Monolog\Handler\FingersCrossedHandler(new Monolog\Handler\ErrorLogHandler());
     $formatter = new Monolog\Formatter\LineFormatter();
     $formatter->allowInlineLineBreaks();
@@ -80,17 +80,17 @@ $container["logger"] = function () {
 };
 // middlewares
 $container["auth-middleware"] = function ($c) {
-    return new CCR\BLAT\Middleware\AuthMiddleware(
+    return new CCR\ISPCR\Middleware\AuthMiddleware(
         $c->get("easydb"),
         $c->get("latitude"),
         $c->get("config")->general->site_auth_realm
     );
 };
 $container["debug-middleware"] = function ($c) {
-    return new CCR\BLAT\Middleware\DebugMiddleware();
+    return new CCR\ISPCR\Middleware\DebugMiddleware();
 };
 // query handler
-$container[CCR\BLAT\Datasource\Query\GetAlignmentListHandler::class] = function ($c) {
-    return new CCR\BLAT\Datasource\Query\GetAlignmentListHandler(
-        new CCR\BLAT\Datasource\Service\AlignmentMatcher($c->get("blat")));
+$container[CCR\ISPCR\Datasource\Query\GetAlignmentListHandler::class] = function ($c) {
+    return new CCR\ISPCR\Datasource\Query\GetAlignmentListHandler(
+        new CCR\ISPCR\Datasource\Service\AlignmentMatcher($c->get("ispcr")));
 };

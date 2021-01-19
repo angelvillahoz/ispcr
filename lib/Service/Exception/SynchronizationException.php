@@ -1,5 +1,5 @@
 <?php
-namespace CCR\BLAT\Service\Exception;
+namespace CCR\ISPCR\Service\Exception;
 
 // Standard PHP Libraries (SPL)
 use RuntimeException;

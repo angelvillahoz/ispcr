@@ -1,5 +1,5 @@
 <?php
-namespace CCR\BLAT\Middleware;
+namespace CCR\ISPCR\Middleware;
 
 // Standard PHP Libraries (SPL)
 use Psr\Http\Message\ResponseInterface;

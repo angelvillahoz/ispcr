@@ -1,8 +1,8 @@
 <?php
-namespace CCR\BLAT\Service\Dispatcher;
+namespace CCR\ISPCR\Service\Dispatcher;
 
-// BLAT libraries with namespaces
-use CCR\BLAT\Service\Message\{BatchCommand, CommandInterface, QueryInterface, QueryResult};
+// ISPCR libraries with namespaces
+use CCR\ISPCR\Service\Message\{BatchCommand, CommandInterface, QueryInterface, QueryResult};
 /**
  * Dispatcher decorator that handles a batched command. Each command in the
  * batch is sent to the next decorated dispatcher individually.

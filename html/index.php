@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>BLAT Server</title>
+    <title>In-Silico PCR Server</title>
     <script src="./node_modules/react/umd/react.production.min.js"></script>
     <script src="./node_modules/react-dom/umd/react-dom.production.min.js"></script>
     <script src="./node_modules/@babel/standalone/babel.min.js"></script>
@@ -57,7 +57,7 @@ const customStyles = {
 };
 
 ReactDOM.render(
-    <BlatForm name="BlatForm" />,
+    <IsPcrForm name="IsPcrForm" />,
     document.getElementById('root')
 );
 </script>

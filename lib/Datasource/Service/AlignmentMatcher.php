@@ -1,36 +1,36 @@
 <?php
-namespace CCR\BLAT\Datasource\Service;
+namespace CCR\ISPCR\Datasource\Service;
 
-// BLAT libraries with namespaces
-use CCR\BLAT\Service\External\BlatDataSource;
+// ISPCR libraries with namespaces
+use CCR\ISPCR\Service\External\BlatDataSource;
 class AlignmentMatcher
 {
-    private $blatDataSource;
-    public function __construct(BlatDataSource $blatDataSource)
+    private $isPcrDataSource;
+    public function __construct(IsPcrDataSource $isPcrDataSource)
     {
-        $this->blatDataSource = $blatDataSource;
+        $this->isPcrDataSource = $isPcrDataSource;
     }
     /**
      * Returns an array of string or Alignment objects from the results 
-     * obtained from the BLAT data source depending on the output format.
+     * obtained from the ISPCR data source depending on the output format.
      */
     public function get(
         string $speciesShortName,
         string $genomeAssemblyReleaseVersion,
-        string $minimumIdentityPercentage,
-        string $sequence,
+        string $forwardPrime,
+        string $reversePrime,
         string $outputFormat
     ): Array {
-        $objects = $this->blatDataSource->query(
+        $objects = $this->isPcrDataSource->query(
             $speciesShortName,
             $genomeAssemblyReleaseVersion,
-            $minimumIdentityPercentage,
-            $sequence,
+            $forwardPrime,
+            $reversePrime,
             $outputFormat
         );
         $objectResults = [];
         switch ($outputFormat) {
-            case "blast9":
+            case "fa":
                 foreach ($objects as $objectResult ) {
                     $objectResults[] = $objectResult;
                 }
