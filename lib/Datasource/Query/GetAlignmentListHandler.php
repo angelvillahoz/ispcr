@@ -17,7 +17,6 @@ class GetAlignmentListHandler
     {
         if ( ($getAlignmentList->getSpeciesShortName() !== "") &&
             ($getAlignmentList->getGenomeAssemblyReleaseVersion() !== "") &&
-            ($getAlignmentList->getMinimumIdentityPercentage() !== "") &&
             ($getAlignmentList->getForwardPrime() !== "") &&
             ($getAlignmentList->getReversePrime() !== "") &&
             ($getAlignmentList->getOutputFormat() !== "") ) {

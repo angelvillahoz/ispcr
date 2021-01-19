@@ -2,7 +2,7 @@
 namespace CCR\ISPCR\Datasource\Service;
 
 // ISPCR libraries with namespaces
-use CCR\ISPCR\Service\External\BlatDataSource;
+use CCR\ISPCR\Service\External\IsPcrDataSource;
 class AlignmentMatcher
 {
     private $isPcrDataSource;

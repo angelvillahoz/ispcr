@@ -39,9 +39,7 @@ func BuildRoutes(
 			r *http.Request) {
 			var speciesShortName,
 				genomeAssemblyReleaseVersion,
-				minimumIdentityPercentage,
 				outputFormat string = "",
-				"",
 				"",
 				""
 			var genomeDatabaseFile *os.File
@@ -62,10 +60,6 @@ func BuildRoutes(
 					buffer := new(bytes.Buffer)
 					buffer.ReadFrom(part)
 					genomeAssemblyReleaseVersion = buffer.String()
-				case "minimumIdentityPercentage":
-					buffer := new(bytes.Buffer)
-					buffer.ReadFrom(part)
-					minimumIdentityPercentage = buffer.String()
 				case "input":
 					filePath = "./" + part.FileName()
 					file, _error = os.Create(filePath)
@@ -96,9 +90,6 @@ func BuildRoutes(
 			}
 			if speciesShortName == "" {
 				panic("No species short name")
-			}
-			if minimumIdentityPercentage == "" {
-				panic("No minimum identity percentage")
 			}
 			if genomeAssemblyReleaseVersion == "" {
 				panic("No genome assembly release version")
@@ -150,7 +141,6 @@ func BuildRoutes(
 			}
 			fmt.Println("Species short name: " + speciesShortName)
 			fmt.Println("Genome assembly release version: " + genomeAssemblyReleaseVersion)
-			fmt.Println("Minimum identity percentage: " + minimumIdentityPercentage + "%")
 			fmt.Println("Output format: " + outputFormat)
 			file, _error = os.OpenFile(
 				filePath,
@@ -184,7 +174,6 @@ func BuildRoutes(
 			}
 			fmt.Println(bytesNumber, " bytes copied from file into in")
 			Search(genomeDatabaseFile,
-				minimumIdentityPercentage,
 				in,
 				outputFormat,
 				out)
