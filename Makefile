@@ -74,7 +74,7 @@ lint: vendor
 logs:
 	mkdir -p ./logs
 
-node_modules-install:
+node_modules-install: html/package.json
 	cd ./html && yarn add react \
 		react-dom \
 		axios \

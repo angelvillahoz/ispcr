@@ -33,7 +33,7 @@ COPY ./assets/ispcr-site.conf /etc/apache2/conf-available/
 
 # Enable mod_rewrite and the site configuration for the Apache HTTP server.
 RUN a2enmod rewrite && \
-    a2enconf blat-site
+    a2enconf ispcr-site
 
 # Expose a mount point for mounting and working with web application files.
 VOLUME ["/var/www"]
