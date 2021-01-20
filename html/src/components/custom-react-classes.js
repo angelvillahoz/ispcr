@@ -41,8 +41,8 @@ class IsPcrForm extends React.Component {
       selectedSpeciesScientificName: 'Drosophila melanogaster (dmel)',
       genomeAssemblyReleaseVersions: [],
       selectedGenomeAssemblyReleaseVersion: 'dm6',
-      forwardPrime: 'GCCGGTTAGTGGTCCAAATA',
-      reversePrime: 'AGCCACCGATGAAACACGAT',
+      forwardPrime: '',
+      reversePrime: '',
       loading: false,
       errors: []
     };
@@ -141,7 +141,7 @@ class IsPcrForm extends React.Component {
     } else {
       if (this.state.list !== null) {
         if (this.state.list !== '') {
-          output = <div dangerouslySetInnerHTML={{__html: this.state.list}}></div>
+          output = <tt><pre><div dangerouslySetInnerHTML={{__html: this.state.list}}></div></pre></tt>
         } else {
           if (this.state.errors == '') {
             output = <p>Not any match</p>;

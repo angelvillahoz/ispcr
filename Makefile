@@ -37,7 +37,7 @@ help:
 analyze: vendor
 	$(PHP) ./vendor/bin/phpstan analyse -l 7 -c phpstan.neon lib
 
-build: vendor
+build: logs vendor-install node_modules-install 
 	cd ./go/ispcrserver/assets && sh ./download-external-assets.sh
 
 config:
@@ -75,7 +75,8 @@ logs:
 	mkdir -p ./logs
 
 node_modules-install: html/package.json
-	cd ./html && yarn add react \
+	cd ./html 
+	yarn add react \
 		react-dom \
 		axios \
 		@babel/standalone \
@@ -91,7 +92,7 @@ schema-backup:
 	docker build -t mariadb_schema_backup ./utilities/mariadb/schema-backup/
 	docker run --rm -tv $(PWD)/db:/data/db --user $$(id -u):$$(id -g) --env-file ./.env --network redfly_default mariadb_schema_backup
 
-serve: logs docker
+serve: docker
 
 vendor-install: composer.json
 	[ -f composer.lock ] && rm composer.lock || true
