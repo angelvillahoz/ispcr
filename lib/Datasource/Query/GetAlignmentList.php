@@ -13,19 +13,32 @@ class GetAlignmentList implements QueryInterface
         $parsedBody = $serverRequestInterface->getParsedBody();
         if ( isset($parsedBody["selectedSpeciesScientificName"]) &&
             isset($parsedBody["selectedGenomeAssemblyReleaseVersion"]) &&
-            isset($parsedBody["forwardPrime"]) &&
-            isset($parsedBody["reversePrime"])) {
+            isset($parsedBody["forwardPrimer"]) &&
+            isset($parsedBody["reversePrimer"]) &&
+            isset($parsedBody["maximumPcrProductSize"]) &&
+            isset($parsedBody["minimumPerfectMatchSize"]) &&
+            isset($parsedBody["minimumGoodMatchesSize"]) &&
+            isset($parsedBody["flipReversePrimer"]) &&
+            isset($parsedBody["selectedOutputFormat"])) {
             $speciesShortName = explode(")", explode("(", $parsedBody["selectedSpeciesScientificName"])[1])[0];
             $genomeAssemblyReleaseVersion = $parsedBody["selectedGenomeAssemblyReleaseVersion"];
-            $forwardPrime = $parsedBody["forwardPrime"];
-            $reversePrime = $parsedBody["reversePrime"];
-            $outputFormat = "fa";
+            $forwardPrimer = $parsedBody["forwardPrimer"];
+            $reversePrimer = $parsedBody["reversePrimer"];
+            $maximumPcrProductSize = $parsedBody["maximumPcrProductSize"];
+            $minimumPerfectMatchSize = $parsedBody["minimumPerfectMatchSize"];
+            $minimumGoodMatchesSize = $parsedBody["minimumGoodMatchesSize"];
+            $flipReversePrimer = $parsedBody["flipReversePrimer"];
+            $outputFormat = $parsedBody["selectedOutputFormat"];
 
             return new self(
                 $speciesShortName,
                 $genomeAssemblyReleaseVersion,
-                $forwardPrime,
-                $reversePrime,
+                $forwardPrimer,
+                $reversePrimer,
+                $maximumPcrProductSize,
+                $minimumPerfectMatchSize,
+                $minimumGoodMatchesSize,
+                $flipReversePrimer,
                 $outputFormat
             );
         }
@@ -35,21 +48,33 @@ class GetAlignmentList implements QueryInterface
 
     private $speciesShortName;
     private $genomeAssemblyReleaseVersion;
-    private $forwardPrime;
-    private $reversePrime;
+    private $forwardPrimer;
+    private $reversePrimer;
+    private $maximumPcrProductSize;
+    private $minimumPerfectMatchSize;
+    private $minimumGoodMatchesSize;
+    private $flipReversePrimer;
     private $outputFormat;
 
     public function __construct(
         string $speciesShortName,
         string $genomeAssemblyReleaseVersion,
-        string $forwardPrime,
-        string $reversePrime,
+        string $forwardPrimer,
+        string $reversePrimer,
+        int $maximumPcrProductSize,
+        int $minimumPerfectMatchSize,
+        int $minimumGoodMatchesSize,
+        bool $flipReversePrimer,
         string $outputFormat
     ) {
         $this->speciesShortName = $speciesShortName;
         $this->genomeAssemblyReleaseVersion = $genomeAssemblyReleaseVersion;
-        $this->forwardPrime = $forwardPrime;
-        $this->reversePrime = $reversePrime;
+        $this->forwardPrimer = $forwardPrimer;
+        $this->reversePrimer = $reversePrimer;
+        $this->maximumPcrProductSize = $maximumPcrProductSize;
+        $this->minimumPerfectMatchSize = $minimumPerfectMatchSize;
+        $this->minimumGoodMatchesSize = $minimumGoodMatchesSize;
+        $this->flipReversePrimer = $flipReversePrimer;
         $this->outputFormat = $outputFormat;
     }
 
@@ -63,14 +88,34 @@ class GetAlignmentList implements QueryInterface
         return $this->genomeAssemblyReleaseVersion;
     }
 
-    public function getForwardPrime(): string
+    public function getForwardPrimer(): string
     {
-        return $this->forwardPrime;
+        return $this->forwardPrimer;
     }
 
-    public function getReversePrime(): string
+    public function getReversePrimer(): string
     {
-        return $this->reversePrime;
+        return $this->reversePrimer;
+    }
+
+    public function getMaximumPcrProductSize(): int
+    {
+        return $this->maximumPcrProductSize;
+    }
+
+    public function getMinimumPerfectMatchSize(): int
+    {
+        return $this->minimumPerfectMatchSize;
+    }
+
+    public function getMinimumGoodMatchesSize(): int
+    {
+        return $this->minimumGoodMatchesSize;
+    }
+
+    public function getFlipReversePrimer(): bool
+    {
+        return $this->flipReversePrimer;
     }
 
     public function getOutputFormat(): string

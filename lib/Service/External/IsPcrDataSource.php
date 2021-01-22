@@ -6,9 +6,6 @@ use RuntimeException;
 use Psr\Http\Message\StreamInterface;
 // Third-party libraries
 use GuzzleHttp\ClientInterface;
-use League\Csv\Reader;
-// ISPCR libraries with namespaces
-use CCR\ISPCR\Service\External\Model\Alignment;
 /**
  * Data source for sending individual queries to a ISPCR endpoint.
  * See https://genome.ucsc.edu/cgi-bin/hgPcr for more details.
@@ -30,6 +27,10 @@ class IsPcrDataSource
      * @param string $genomeAssemblyReleaseVersion The genome assembly release version.
      * @param string $forwardPrime The forward prime.
      * @param string $reversePrime The reverse prime.
+     * @param int $maximumPcrProductSize The maximum size of the PCR product.
+     * @param int $minimumPerfectMatchSize The minimum size of the perfect match at 3\' end of primer.
+     * @param int $minimumGoodMatchesSize The minimum size where there must be 2 matches for each mismatch.
+     * @param bool $flipReversePrimer The reverse of the complement reverse (second) primer.
      * @param string $outputFormat The output format.
      * @return iterable The alignments returned from the query.
      */
@@ -38,6 +39,10 @@ class IsPcrDataSource
         string $genomeAssemblyReleaseVersion,        
         string $forwardPrime,
         string $reversePrime,
+        int $maximumPcrProductSize,
+        int $minimumPerfectMatchSize,
+        int $minimumGoodMatchesSize,
+        bool $flipReversePrimer,
         string $outputFormat
     ): iterable {
         $queryFile = tmpfile();
@@ -68,70 +73,37 @@ class IsPcrDataSource
                         "filename" => "query"
                     ],
                     [
+                        "name"     => "maximumPcrProductSize",
+                        "contents" => $maximumPcrProductSize
+                    ],
+                    [
+                        "name"     => "minimumPerfectMatchSize",
+                        "contents" => $minimumPerfectMatchSize
+                    ],
+                    [
+                        "name"     => "minimumGoodMatchesSize",
+                        "contents" => $minimumGoodMatchesSize
+                    ],
+                    [
+                        "name"     => "flipReversePrimer",
+                        "contents" => $flipReversePrimer
+                    ],                                                            
+                    [
                         "name"     => "outputFormat",
                         "contents" => $outputFormat
                     ]
                 ]
             ]
         )->getBody();
-        switch($outputFormat) {
-            case "fa":
-                return $this->parseFastaStreamInterface($streamInterface);
-                break;
-            case "psl":
-                return $this->parsePslStreamInterface($streamInterface);
-                break;
-            default:
-        }
-    }
-    private function parseFastaStreamInterface(StreamInterface $streamInterface): iterable
-    {
-        $fastaStream = $streamInterface->detach();
-        if ( $fastaStream === null ) {
-            throw new RuntimeException("Failed to open the FASTA stream.");
-        }
-        yield stream_get_contents($fastaStream);
-    }    
-    private function parsePslStreamInterface(StreamInterface $streamInterface): iterable
-    {
-        $pslStream = $streamInterface->detach();
-        if ( $pslStream === null ) {
-            throw new RuntimeException("Failed to open the PSL stream.");
-        }
-        $reader = Reader::createFromStream($pslStream)
-            ->setDelimiter("\t");
-        foreach ( $reader->fetch() as $row ) {
-            yield $row[9] => $this->buildAlignment($row);
-        }
-    }
-    private function buildAlignment(array $record): Alignment
-    {
-        $strand = $record[8];
-        if ( strtolower(substr($record[13], 0, 3)) === "chr" ) {
-            $chromosomeName = substr($record[13], 3);
-        } else {
-            $chromosomeName = $record[13];
-        }
-        $startCoordinate = $record[15];
-        $endCoordinate = $record[16];
-        $sequence = trim(strtoupper($record[22]), ",");
-        $matchesNumber = $record[0];
-        $repeatMatchesNumber = $record[2];
-        $mismatchesNumber = $record[1];
-        $queryInsertsNumber = $record[4];
-        $targetInsertsNumber = $record[6];
 
-        return new Alignment(
-            $strand,
-            $chromosomeName,
-            $startCoordinate,
-            $endCoordinate,
-            $sequence,
-            $matchesNumber,
-            $repeatMatchesNumber,
-            $mismatchesNumber,
-            $queryInsertsNumber,
-            $targetInsertsNumber
-        );
+        return $this->parseStreamInterface($streamInterface);
     }
+    private function parseStreamInterface(StreamInterface $streamInterface): iterable
+    {
+        $stream = $streamInterface->detach();
+        if ( $stream === null ) {
+            throw new RuntimeException("Failed to open the stream.");
+        }
+        yield stream_get_contents($stream);
+    }    
 }

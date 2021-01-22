@@ -17,33 +17,28 @@ class AlignmentMatcher
     public function get(
         string $speciesShortName,
         string $genomeAssemblyReleaseVersion,
-        string $forwardPrime,
-        string $reversePrime,
+        string $forwardPrimer,
+        string $reversePrimer,
+        int $maximumPcrProductSize,
+        int $minimumPerfectMatchSize,
+        int $minimumGoodMatchesSize,
+        bool $flipReversePrimer,
         string $outputFormat
     ): Array {
         $objects = $this->isPcrDataSource->query(
             $speciesShortName,
             $genomeAssemblyReleaseVersion,
-            $forwardPrime,
-            $reversePrime,
+            $forwardPrimer,
+            $reversePrimer,
+            $maximumPcrProductSize,
+            $minimumPerfectMatchSize,
+            $minimumGoodMatchesSize,
+            $flipReversePrimer,
             $outputFormat
         );
         $objectResults = [];
-        switch ($outputFormat) {
-            case "fa":
-                foreach ($objects as $objectResult ) {
-                    $objectResults[] = $objectResult;
-                }
-                break;
-            case "plsx":
-                foreach ( $objects as $coordinate => $alignment ) {
-                    if ( (isset($objectResults[$coordinate]) === false) ||
-                        ($objectResults[$coordinate]->score < $alignment->score) ) {
-                            $objectResults[$coordinate] = $alignment;
-                    }
-                }
-                break;
-            default:
+        foreach ( $objects as $objectResult ) {
+            $objectResults[] = $objectResult;
         }
 
         return $objectResults;

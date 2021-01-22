@@ -7,6 +7,9 @@ vendor/
 # Configuration files
 config/settings.yml
 
+# Database SQL files
+dumps/
+
 # Log and debugging files
 logs/
 
@@ -19,4 +22,4 @@ logs/
 html/node_modules/
 
 # VS Code files
-isPCR.code-workspace
+ispcr.code-workspace

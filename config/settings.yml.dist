@@ -11,7 +11,7 @@ database:
 
 # Configuration that affects the application as a whole.
 general:
-    ispcr_version: '1.0.0'
+    ispcr_version: '2.0.0'
     site_base_url: '<ISPCR_BASE_URL>'
     site_base_dir: '/var/www/'
     site_auth_realm: '<SITE_AUTH_REALM>'

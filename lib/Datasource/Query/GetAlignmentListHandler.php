@@ -17,41 +17,33 @@ class GetAlignmentListHandler
     {
         if ( ($getAlignmentList->getSpeciesShortName() !== "") &&
             ($getAlignmentList->getGenomeAssemblyReleaseVersion() !== "") &&
-            ($getAlignmentList->getForwardPrime() !== "") &&
-            ($getAlignmentList->getReversePrime() !== "") &&
+            ($getAlignmentList->getForwardPrimer() !== "") &&
+            ($getAlignmentList->getReversePrimer() !== "") &&
+            ($getAlignmentList->getMaximumPcrProductSize() !== "") &&
+            ($getAlignmentList->getMinimumPerfectMatchSize() !== "") &&
+            ($getAlignmentList->getMinimumGoodMatchesSize() !== "") &&
+            ($getAlignmentList->getFlipReversePrimer() !== "") &&
             ($getAlignmentList->getOutputFormat() !== "") ) {
             $alignmentList = $this->alignmentMatcher->get(
                 $getAlignmentList->getSpeciesShortName(),
                 $getAlignmentList->getGenomeAssemblyReleaseVersion(),
-                $getAlignmentList->getForwardPrime(),
-                $getAlignmentList->getReversePrime(),
+                $getAlignmentList->getForwardPrimer(),
+                $getAlignmentList->getReversePrimer(),
+                $getAlignmentList->getMaximumPcrProductSize(),
+                $getAlignmentList->getMinimumPerfectMatchSize(),
+                $getAlignmentList->getMinimumGoodMatchesSize(),
+                $getAlignmentList->getFlipReversePrimer(),
                 $getAlignmentList->getOutputFormat()
             );
-            $coordinates = array();            
-            switch ($getAlignmentList->getOutputFormat()) {
-                case "fa":
-                    $coordinates = preg_replace(
-                        "/[\r\n]+/",
-                        "<br />",
-                        preg_replace(
-                            "/[\t]+/",
-                            "&emsp;",
-                            $alignmentList
-                        )
-                    );
-                    break;
-                case "pls":
-                    foreach ( $alignmentList as $rawAlignment ) {
-                        $alignment = array(
-                            "chromosome"    => $rawAlignment->chromosomeName,
-                            "end"           => $rawAlignment->endCoordinate,
-                            "start"         => $rawAlignment->startCoordinate
-                        );
-                        $coordinates[] = $alignment;
-                    }
-                    break;
-                default:
-            }
+            $coordinates = preg_replace(
+                "/[\r\n]+/",
+                "<br />",
+                preg_replace(
+                    "/[\t]+/",
+                    "&emsp;",
+                    $alignmentList
+                )
+            );            
         }
 
         return QueryResult::fromArray($coordinates);

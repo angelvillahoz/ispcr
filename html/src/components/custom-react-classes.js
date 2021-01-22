@@ -4,32 +4,58 @@ class Spinner extends React.Component {
       <img
         src='./images/spinner.gif'
         style={{
-          margin: 'auto',
-          display: 'block'
+          display: 'block',
+          margin: 'auto'
         }}
-        alt='Checking any forward and reverse primes match...'
+        alt='Checking any forward and reverse primers match...'
       />
     );
   }
 }
 
-function validate(forwardPrime, reversePrime) {
+function validate(
+  forwardPrimer,
+  reversePrimer,
+  maximumPcrProductSize,
+  minimumPerfectMatchSize,
+  minimumGoodMatchesSize
+) {
   const errorsList = [];
-  if (forwardPrime.length < 15) {
-    errorsList.push('The forward prime is too short');
+  if (forwardPrimer.length < 15) {
+    errorsList.push('The forward primer is too short');
   } else {
-    if (forwardPrime.match(/[^ACGTacgt]/gm)) {
-      errorsList.push('The forward prime has invalid character(s): ' + forwardPrime.match(/[^ACGTacgt]/gm));
+    if (forwardPrimer.match(/[^ACGTacgt]/gm)) {
+      errorsList.push('The forward primer has invalid character(s): ' + forwardPrimer.match(/[^ACGTacgt]/gm));
     }
   }
-  if (reversePrime.length < 15) {
-    errorsList.push('The reverse prime is too short');
+  if (reversePrimer.length < 15) {
+    errorsList.push('The reverse primer is too short');
   } else {
-    if (reversePrime.match(/[^ACGTacgt]/gm)) {
-      errorsList.push('The reverse prime has invalid character(s): ' + reversePrime.match(/[^ACGTacgt]/gm));
+    if (reversePrimer.match(/[^ACGTacgt]/gm)) {
+      errorsList.push('The reverse primer has invalid character(s): ' + reversePrimer.match(/[^ACGTacgt]/gm));
     }
   }
-
+  if (!(Number.isInteger(maximumPcrProductSize))) {
+    errorsList.push('The maximum size of the PCR product must be integer');
+  } else {
+    if (maximumPcrProductSize <= 0) {
+      errorsList.push('The maximum size of the PCR product must be greater than zero');
+    }
+  }
+  if (!(Number.isInteger(minimumPerfectMatchSize))) {
+    errorsList.push('The minimum size of the perfect match at 3\' end of primer must be integer');
+  } else {
+    if (minimumPerfectMatchSize <= 0) {
+      errorsList.push('The minimum size of the perfect match at 3\' end of primer must be greater than zero');
+    }
+  }
+  if (!(Number.isInteger(minimumGoodMatchesSize))) {
+    errorsList.push('The minimum size where there must be 2 matches for each mismatch must be integer');
+  } else {
+    if (minimumGoodMatchesSize <= 0) {
+      errorsList.push('The minimum size where there must be 2 matches for each mismatch must be greater than zero');
+    }
+  }
   return errorsList;
 }
 
@@ -41,13 +67,20 @@ class IsPcrForm extends React.Component {
       selectedSpeciesScientificName: 'Drosophila melanogaster (dmel)',
       genomeAssemblyReleaseVersions: [],
       selectedGenomeAssemblyReleaseVersion: 'dm6',
-      forwardPrime: '',
-      reversePrime: '',
+      forwardPrimer: '',
+      reversePrimer: '',
+      maximumPcrProductSize: 4000,
+      minimumPerfectMatchSize: 15,
+      minimumGoodMatchesSize: 15,
+      flipReversePrimer: false,
+      outputFormats: [],
+      selectedOutputFormat: 'fa',
       loading: false,
       errors: []
     };
     this.changeSpeciesScientificName = this.changeSpeciesScientificName.bind(this);
     this.changeGenomeAssemblyReleaseVersion = this.changeGenomeAssemblyReleaseVersion.bind(this);
+    this.changeOutputFormat = this.changeOutputFormat.bind(this);
   };
 
   componentDidMount() {
@@ -86,7 +119,12 @@ class IsPcrForm extends React.Component {
         { name: 'dm3'},
         { name: 'dm2'},
         { name: 'dm1'}
-      ]
+      ],
+      outputFormats: [
+        { name: 'bed'},
+        { name: 'fa'},
+        { name: 'psl'}
+      ]      
     });
   }
 
@@ -100,11 +138,27 @@ class IsPcrForm extends React.Component {
 		this.setState({ selectedGenomeAssemblyReleaseVersion: event.target.value });
 	}
 
+  changeOutputFormat(event) {
+		this.setState({ selectedOutputFormat: event.target.value });
+	}
+
+  handleClear = e => {
+    this.setState({
+      forwardPrimer: '',
+      reversePrimer: ''
+    });    
+  }
+
   handleSubmit = e => {
     e.preventDefault();
+    this.state.forwardPrimer = this.state.forwardPrimer.replace(/(\r\n|\r|\n)/g, '');
+    this.state.reversePrimer = this.state.reversePrimer.replace(/(\r\n|\r|\n)/g, '');
     const errors = validate(
-        this.state.forwardPrime,
-        this.state.reversePrime
+        this.state.forwardPrimer,
+        this.state.reversePrimer,
+        this.state.maximumPcrProductSize,
+        this.state.minimumPerfectMatchSize,
+        this.state.minimumGoodMatchesSize
     );
     if (errors.length > 0) {
       this.setState({ errors: errors });
@@ -174,25 +228,69 @@ class IsPcrForm extends React.Component {
 					  </select><br />
             <br />
             <label>Forward Prime:&nbsp;</label><br />
-            <textarea id="forwardPrimeId"
-                      name="forwardPrime"
+            <textarea id="forwardPrimerId"
+                      name="forwardPrimer"
                       required
                       rows="3"
                       cols="100"
-                      value={this.state.forwardPrime}
-                      onChange={e => this.setState({ forwardPrime: e.target.value })}></textarea><br />
+                      value={this.state.forwardPrimer}
+                      onChange={e => this.setState({ forwardPrimer: e.target.value })}></textarea><br />
             <br />
             <label>Reverse Prime:&nbsp;</label><br />
-            <textarea id="reversePrimeId"
-                      name="reversePrime"
+            <textarea id="reversePrimerId"
+                      name="reversePrimer"
                       required
                       rows="3"
                       cols="100"
-                      value={this.state.reversePrime}
-                      onChange={e => this.setState({ reversePrime: e.target.value })}></textarea><br />
-            <br />            
+                      value={this.state.reversePrimer}
+                      onChange={e => this.setState({ reversePrimer: e.target.value })}></textarea><br />
+            <br />
+            <label>Maximum PCR Product Size:&nbsp;</label>
+            <input id="maximumPcrProductSizeId"
+                   name="maximumPcrProductSize"
+                   required
+                   size="5"
+                   type="text"
+                   value={this.state.maximumPcrProductSize}
+                   onChange={e => this.setState({ maximumPcrProductSize: e.target.value })}/><br />
+            <br />                   
+            <label>Minimum Perfect Match Size:&nbsp;</label>
+            <input id="minimumPerfectMatchSizeId"
+                   name="minimumPerfectMatchSize"
+                   required
+                   size="5"
+                   type="text"
+                   value={this.state.minimumPerfectMatchSize}
+                   onChange={e => this.setState({ minimumPerfectMatchSize: e.target.value })}/><br />
+            <br />                   
+            <label>Minimum Good Match Size:&nbsp;</label>
+            <input id="minimumGoodMatchesSizeId"
+                   name="minimumGoodMatchesSize"
+                   required
+                   size="5"
+                   type="text"
+                   value={this.state.minimumGoodMatchesSize}
+                   onChange={e => this.setState({ minimumGoodMatchesSize: e.target.value })}/><br />
+            <br />
+            <label>Flip Reverse Primer:&nbsp;</label>
+            <input id="flipReversePrimerId"
+                   name="flipReversePrimer"
+                   type="checkbox"
+                   value={this.state.flipReversePrimer}
+                   onChange={e => this.setState({ flipReversePrimer: e.target.value })}/><br />
+            <br />
+            <label>OutputFormat:&nbsp;</label>            
+            <select placeholder="outputFormatsSelector" value={this.state.selectedOutputFormat} onChange={this.changeOutputFormat}>
+						  {this.state.outputFormats.map((e, key) => {
+							  return <option key="{key}">{e.name}</option>;
+						  })}
+					  </select><br />
+            <br />                               
             <input type="submit"
-                   value="Submit" /><br />
+                   value="Submit" />&nbsp;&nbsp;&nbsp;
+            <input type="button"
+                   value="Clear"
+                   onClick={this.handleClear} /><br />                   
             <br />
             {errors.map(error => (
               <p key={error}>Error: {error}</p>
