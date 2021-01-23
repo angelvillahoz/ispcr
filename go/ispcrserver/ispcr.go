@@ -13,11 +13,19 @@ import (
 func Search(
 	genomeDatabase *os.File,
 	query *os.File,
+	maximumPcrProductSize string,
+	minimumPerfectMatchSize string,
+	minimumGoodMatchesSize string,
+	flipReversePrimer string,
 	outputFormat string,
 	output *os.File) {
 	isPcr(
 		genomeDatabase.Name(),
 		query.Name(),
+		maximumPcrProductSize,
+		minimumPerfectMatchSize,
+		minimumGoodMatchesSize,
+		flipReversePrimer,
 		outputFormat,
 		output.Name())
 	tacOutput, _error := exec.Command(
@@ -57,14 +65,35 @@ func Search(
 func isPcr(
 	genomeDatabase string,
 	in string,
+	maximumPcrProductSize string,
+	minimumPerfectMatchSize string,
+	minimumGoodMatchesSize string,
+	flipReversePrimer string,
 	outputFormat string,
 	out string) {
-	cmd := exec.Command(
-		"isPcr",
-		"-out="+outputFormat,
-		genomeDatabase,
-		in,
-		out)
+	var cmd *exec.Cmd
+	if flipReversePrimer == "false" {
+		cmd = exec.Command(
+			"isPcr",
+			"-maxSize="+maximumPcrProductSize,
+			"-minPerfect="+minimumPerfectMatchSize,
+			"-minGood="+minimumGoodMatchesSize,
+			"-out="+outputFormat,
+			genomeDatabase,
+			in,
+			out)
+	} else {
+		cmd = exec.Command(
+			"isPcr",
+			"-flipReverse",
+			"-maxSize="+maximumPcrProductSize,
+			"-minPerfect="+minimumPerfectMatchSize,
+			"-minGood="+minimumGoodMatchesSize,
+			"-out="+outputFormat,
+			genomeDatabase,
+			in,
+			out)
+	}
 	if _error := cmd.Run(); _error != nil {
 		panic(_error)
 	}

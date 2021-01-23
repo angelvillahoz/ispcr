@@ -72,7 +72,7 @@ class IsPcrForm extends React.Component {
       maximumPcrProductSize: 4000,
       minimumPerfectMatchSize: 15,
       minimumGoodMatchesSize: 15,
-      flipReversePrimer: false,
+      selectedFlipReversePrimer: false,
       outputFormats: [],
       selectedOutputFormat: 'fa',
       loading: false,
@@ -273,11 +273,11 @@ class IsPcrForm extends React.Component {
                    onChange={e => this.setState({ minimumGoodMatchesSize: e.target.value })}/><br />
             <br />
             <label>Flip Reverse Primer:&nbsp;</label>
-            <input id="flipReversePrimerId"
+            <input checked={this.state.selectedFlipReversePrimer}
+                   id="flipReversePrimerId"
                    name="flipReversePrimer"
                    type="checkbox"
-                   value={this.state.flipReversePrimer}
-                   onChange={e => this.setState({ flipReversePrimer: e.target.value })}/><br />
+                   onChange={e => this.setState({ selectedFlipReversePrimer: e.target.checked })}/><br />
             <br />
             <label>OutputFormat:&nbsp;</label>            
             <select placeholder="outputFormatsSelector" value={this.state.selectedOutputFormat} onChange={this.changeOutputFormat}>

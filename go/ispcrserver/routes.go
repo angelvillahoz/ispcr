@@ -39,7 +39,15 @@ func BuildRoutes(
 			r *http.Request) {
 			var speciesShortName,
 				genomeAssemblyReleaseVersion,
+				maximumPcrProductSize,
+				minimumPerfectMatchSize,
+				minimumGoodMatchesSize,
+				flipReversePrimer,
 				outputFormat string = "",
+				"",
+				"",
+				"",
+				"",
 				"",
 				""
 			var genomeDatabaseFile *os.File
@@ -56,6 +64,10 @@ func BuildRoutes(
 					break
 				}
 				switch part.FormName() {
+				case "flipReversePrimer":
+					buffer := new(bytes.Buffer)
+					buffer.ReadFrom(part)
+					flipReversePrimer = buffer.String()
 				case "genomeAssemblyReleaseVersion":
 					buffer := new(bytes.Buffer)
 					buffer.ReadFrom(part)
@@ -78,6 +90,18 @@ func BuildRoutes(
 						panic(_error)
 					}
 					defer file.Close()
+				case "maximumPcrProductSize":
+					buffer := new(bytes.Buffer)
+					buffer.ReadFrom(part)
+					maximumPcrProductSize = buffer.String()
+				case "minimumGoodMatchesSize":
+					buffer := new(bytes.Buffer)
+					buffer.ReadFrom(part)
+					minimumGoodMatchesSize = buffer.String()
+				case "minimumPerfectMatchSize":
+					buffer := new(bytes.Buffer)
+					buffer.ReadFrom(part)
+					minimumPerfectMatchSize = buffer.String()
 				case "outputFormat":
 					buffer := new(bytes.Buffer)
 					buffer.ReadFrom(part)
@@ -93,6 +117,18 @@ func BuildRoutes(
 			}
 			if genomeAssemblyReleaseVersion == "" {
 				panic("No genome assembly release version")
+			}
+			if maximumPcrProductSize == "" {
+				panic("No maximum PCR product size")
+			}
+			if minimumGoodMatchesSize == "" {
+				panic("No minimum good matches size")
+			}
+			if minimumPerfectMatchSize == "" {
+				panic("No minimum perfect match size")
+			}
+			if flipReversePrimer == "" {
+				panic("No flip reverse primer")
 			}
 			if outputFormat == "" {
 				panic("No output format")
@@ -141,6 +177,10 @@ func BuildRoutes(
 			}
 			fmt.Println("Species short name: " + speciesShortName)
 			fmt.Println("Genome assembly release version: " + genomeAssemblyReleaseVersion)
+			fmt.Println("Maximum PCR product size: " + maximumPcrProductSize)
+			fmt.Println("Minimum perfect match size: " + minimumPerfectMatchSize)
+			fmt.Println("Minimum good matches size: " + minimumGoodMatchesSize)
+			fmt.Println("Flip reverse primer: " + flipReversePrimer)
 			fmt.Println("Output format: " + outputFormat)
 			file, _error = os.OpenFile(
 				filePath,
@@ -175,6 +215,10 @@ func BuildRoutes(
 			fmt.Println(bytesNumber, " bytes copied from file into in")
 			Search(genomeDatabaseFile,
 				in,
+				maximumPcrProductSize,
+				minimumPerfectMatchSize,
+				minimumGoodMatchesSize,
+				flipReversePrimer,
 				outputFormat,
 				out)
 			fmt.Println("Search done!")

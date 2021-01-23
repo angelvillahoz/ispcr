@@ -53,6 +53,7 @@ class IsPcrDataSource
             $queryFile,
             "query\t" . $forwardPrime . "\t" . $reversePrime . PHP_EOL
         );
+        $flipReversePrimer = $flipReversePrimer ? "true" : "false";
         // Making a multipart/form-data request
         $streamInterface = $this->client->request(
             "POST",

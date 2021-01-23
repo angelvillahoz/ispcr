@@ -18,7 +18,7 @@ class GetAlignmentList implements QueryInterface
             isset($parsedBody["maximumPcrProductSize"]) &&
             isset($parsedBody["minimumPerfectMatchSize"]) &&
             isset($parsedBody["minimumGoodMatchesSize"]) &&
-            isset($parsedBody["flipReversePrimer"]) &&
+            isset($parsedBody["selectedFlipReversePrimer"]) &&
             isset($parsedBody["selectedOutputFormat"])) {
             $speciesShortName = explode(")", explode("(", $parsedBody["selectedSpeciesScientificName"])[1])[0];
             $genomeAssemblyReleaseVersion = $parsedBody["selectedGenomeAssemblyReleaseVersion"];
@@ -27,7 +27,7 @@ class GetAlignmentList implements QueryInterface
             $maximumPcrProductSize = $parsedBody["maximumPcrProductSize"];
             $minimumPerfectMatchSize = $parsedBody["minimumPerfectMatchSize"];
             $minimumGoodMatchesSize = $parsedBody["minimumGoodMatchesSize"];
-            $flipReversePrimer = $parsedBody["flipReversePrimer"];
+            $flipReversePrimer = $parsedBody["selectedFlipReversePrimer"];
             $outputFormat = $parsedBody["selectedOutputFormat"];
 
             return new self(
