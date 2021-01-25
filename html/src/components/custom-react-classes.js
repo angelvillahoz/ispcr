@@ -13,52 +13,6 @@ class Spinner extends React.Component {
   }
 }
 
-function validate(
-  forwardPrimer,
-  reversePrimer,
-  maximumPcrProductSize,
-  minimumPerfectMatchSize,
-  minimumGoodMatchesSize
-) {
-  const errorsList = [];
-  if (forwardPrimer.length < 15) {
-    errorsList.push('The forward primer is too short');
-  } else {
-    if (forwardPrimer.match(/[^ACGTacgt]/gm)) {
-      errorsList.push('The forward primer has invalid character(s): ' + forwardPrimer.match(/[^ACGTacgt]/gm));
-    }
-  }
-  if (reversePrimer.length < 15) {
-    errorsList.push('The reverse primer is too short');
-  } else {
-    if (reversePrimer.match(/[^ACGTacgt]/gm)) {
-      errorsList.push('The reverse primer has invalid character(s): ' + reversePrimer.match(/[^ACGTacgt]/gm));
-    }
-  }
-  if (!(Number.isInteger(maximumPcrProductSize))) {
-    errorsList.push('The maximum size of the PCR product must be integer');
-  } else {
-    if (maximumPcrProductSize <= 0) {
-      errorsList.push('The maximum size of the PCR product must be greater than zero');
-    }
-  }
-  if (!(Number.isInteger(minimumPerfectMatchSize))) {
-    errorsList.push('The minimum size of the perfect match at 3\' end of primer must be integer');
-  } else {
-    if (minimumPerfectMatchSize <= 0) {
-      errorsList.push('The minimum size of the perfect match at 3\' end of primer must be greater than zero');
-    }
-  }
-  if (!(Number.isInteger(minimumGoodMatchesSize))) {
-    errorsList.push('The minimum size where there must be 2 matches for each mismatch must be integer');
-  } else {
-    if (minimumGoodMatchesSize <= 0) {
-      errorsList.push('The minimum size where there must be 2 matches for each mismatch must be greater than zero');
-    }
-  }
-  return errorsList;
-}
-
 class IsPcrForm extends React.Component {
   constructor(props) {
     super(props);
@@ -69,13 +23,14 @@ class IsPcrForm extends React.Component {
       selectedGenomeAssemblyReleaseVersion: 'dm6',
       forwardPrimer: '',
       reversePrimer: '',
-      maximumPcrProductSize: 4000,
-      minimumPerfectMatchSize: 15,
-      minimumGoodMatchesSize: 15,
+      maximumPcrProductSize: '4000',
+      minimumPerfectMatchSize: '15',
+      minimumGoodMatchesSize: '15',
       selectedFlipReversePrimer: false,
       outputFormats: [],
       selectedOutputFormat: 'fa',
       loading: false,
+      isDisabled: false,      
       errors: []
     };
     this.changeSpeciesScientificName = this.changeSpeciesScientificName.bind(this);
@@ -149,17 +104,35 @@ class IsPcrForm extends React.Component {
     });    
   }
 
+  validate() {
+    const {
+      forwardPrimer,
+      reversePrimer
+    } = this.state;
+    const errorsList = [];
+    if (forwardPrimer.length < 15) {
+      errorsList.push('The forward primer is too short');
+    } else {
+      if (forwardPrimer.match(/[^ACGTacgt]/gm)) {
+        errorsList.push('The forward primer has invalid character(s): ' + forwardPrimer.match(/[^ACGTacgt]/gm));
+      }
+    }
+    if (reversePrimer.length < 15) {
+      errorsList.push('The reverse primer is too short');
+    } else {
+      if (reversePrimer.match(/[^ACGTacgt]/gm)) {
+        errorsList.push('The reverse primer has invalid character(s): ' + reversePrimer.match(/[^ACGTacgt]/gm));
+      }
+    }
+    
+    return errorsList;
+  }
+  
   handleSubmit = e => {
     e.preventDefault();
     this.state.forwardPrimer = this.state.forwardPrimer.replace(/(\r\n|\r|\n)/g, '');
     this.state.reversePrimer = this.state.reversePrimer.replace(/(\r\n|\r|\n)/g, '');
-    const errors = validate(
-        this.state.forwardPrimer,
-        this.state.reversePrimer,
-        this.state.maximumPcrProductSize,
-        this.state.minimumPerfectMatchSize,
-        this.state.minimumGoodMatchesSize
-    );
+    const errors = this.validate();
     if (errors.length > 0) {
       this.setState({ errors: errors });
       this.setState({ list: ''});
@@ -168,6 +141,7 @@ class IsPcrForm extends React.Component {
       this.setState({ errors: [] });
     }
     this.setState({
+      isDisabled: true,
       loading: true
     });    
     axios({
@@ -178,12 +152,14 @@ class IsPcrForm extends React.Component {
     })
     .then(result => {
       this.setState({
+        isDisabled: false,        
         list: result.data.results[0],
         loading: false
       });      
     })
     .catch(error => this.setState({ 
       errors : [error.message],
+      isDisabled: false,      
       loading: false      
     }));
   };
@@ -246,37 +222,43 @@ class IsPcrForm extends React.Component {
                       onChange={e => this.setState({ reversePrimer: e.target.value })}></textarea><br />
             <br />
             <label>Maximum PCR Product Size:&nbsp;</label>
-            <input id="maximumPcrProductSizeId"
+            <input type="text"
+                   id="maximumPcrProductSizeId"
                    name="maximumPcrProductSize"
                    required
                    size="5"
-                   type="text"
+                   title="Only between 0 and 2147483647"
+                   pattern="^\d+$"
                    value={this.state.maximumPcrProductSize}
                    onChange={e => this.setState({ maximumPcrProductSize: e.target.value })}/><br />
             <br />                   
             <label>Minimum Perfect Match Size:&nbsp;</label>
-            <input id="minimumPerfectMatchSizeId"
+            <input type="text"
+                   id="minimumPerfectMatchSizeId"
                    name="minimumPerfectMatchSize"
                    required
                    size="5"
-                   type="text"
+                   title="Only between 0 and 2147483647"
+                   pattern="^\d+$"
                    value={this.state.minimumPerfectMatchSize}
                    onChange={e => this.setState({ minimumPerfectMatchSize: e.target.value })}/><br />
             <br />                   
             <label>Minimum Good Match Size:&nbsp;</label>
-            <input id="minimumGoodMatchesSizeId"
+            <input type="text"
+                   id="minimumGoodMatchesSizeId"
                    name="minimumGoodMatchesSize"
                    required
                    size="5"
-                   type="text"
+                   title="Only between 0 and 2147483647"
+                   pattern="^\d+$"
                    value={this.state.minimumGoodMatchesSize}
                    onChange={e => this.setState({ minimumGoodMatchesSize: e.target.value })}/><br />
             <br />
             <label>Flip Reverse Primer:&nbsp;</label>
-            <input checked={this.state.selectedFlipReversePrimer}
+            <input type="checkbox"
+                   checked={this.state.selectedFlipReversePrimer}
                    id="flipReversePrimerId"
                    name="flipReversePrimer"
-                   type="checkbox"
                    onChange={e => this.setState({ selectedFlipReversePrimer: e.target.checked })}/><br />
             <br />
             <label>OutputFormat:&nbsp;</label>            
@@ -286,11 +268,8 @@ class IsPcrForm extends React.Component {
 						  })}
 					  </select><br />
             <br />                               
-            <input type="submit"
-                   value="Submit" />&nbsp;&nbsp;&nbsp;
-            <input type="button"
-                   value="Clear"
-                   onClick={this.handleClear} /><br />                   
+            <button type="submit" disabled={this.state.isDisabled} >Submit</button>&nbsp;&nbsp;&nbsp;
+            <button type="button" disabled={this.state.isDisabled} onClick={this.handleClear}>Clear</button><br />
             <br />
             {errors.map(error => (
               <p key={error}>Error: {error}</p>

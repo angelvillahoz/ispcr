@@ -1,8 +1,8 @@
-ISPCR = docker-compose exec ispcr_server blat
+ISPCR = docker-compose exec ispcr_server isPcr
 PHP = docker-compose exec php_server php
 PHP_BASH = docker-compose exec php_server
 
-.PHONY: analyze build config database-backup docker-initialize docker-restart help lint logs node_modules-install php-libraries-reload schema-backup vendor-install vendor-update xdebug
+.PHONY: analyze build config database-backup docker-initialize docker-restart help lint logs node_modules-install php-libraries-reload schema-backup vendor-install vendor-update vscode-debug-settings-config xdebug
 
 help:
 	@ echo "Usage: make [target]"
@@ -29,6 +29,7 @@ help:
 	@ echo "                                      used by the isPCR application"
 	@ echo "  vendor-update                       Rebuilds the Composer image and upgrade/downgrade all the PHP"
 	@ echo "                                      libraries used by the isPCR application"
+	@ echo "  vscode-debug-settings-config        Configure the Visual Studio Code debug settings"
 	@ echo "  xdebug                              Activate the XDebug module for PHP debugging."
 
 analyze: vendor
@@ -94,6 +95,11 @@ vendor-update: composer.json
 	docker run --rm --volume $(PWD):/app --user $$(id -u):$$(id -g) composer --version
 	docker run --rm --volume $(PWD):/app --user $$(id -u):$$(id -g) composer validate
 	docker run --rm --volume $(PWD):/app --user $$(id -u):$$(id -g) composer update
+
+vscode-debug-settings-config:
+	cp ./.vscode/launch.json.dist ./.vscode/launch.json
+	chmod 0664 ./.vscode/launch.json
+	sed -i 's,<ISPCR_BASE_URL>,$(ISPCR_BASE_URL),g' ./.vscode/launch.json
 
 xdebug:
 	$(PHP_BASH) cp ./assets/xdebug.ini.dist /usr/local/etc/php/conf.d/xdebug.ini

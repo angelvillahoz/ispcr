@@ -19,9 +19,9 @@ class AlignmentMatcher
         string $genomeAssemblyReleaseVersion,
         string $forwardPrimer,
         string $reversePrimer,
-        int $maximumPcrProductSize,
-        int $minimumPerfectMatchSize,
-        int $minimumGoodMatchesSize,
+        string $maximumPcrProductSize,
+        string $minimumPerfectMatchSize,
+        string $minimumGoodMatchesSize,
         bool $flipReversePrimer,
         string $outputFormat
     ): Array {

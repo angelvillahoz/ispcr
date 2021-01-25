@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "BLAT",
+            "name": "isPCR",
             "type": "chrome",
             "request": "launch",
-            "url": "http://199.109.193.56",
+            "url": "<ISPCR_BASE_URL>",
             "webRoot": "${workspaceFolder}/html"
         },
         {

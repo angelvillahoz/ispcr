@@ -19,9 +19,9 @@ class GetAlignmentListHandler
             ($getAlignmentList->getGenomeAssemblyReleaseVersion() !== "") &&
             ($getAlignmentList->getForwardPrimer() !== "") &&
             ($getAlignmentList->getReversePrimer() !== "") &&
-            (strval($getAlignmentList->getMaximumPcrProductSize()) !== "") &&
-            (strval($getAlignmentList->getMinimumPerfectMatchSize()) !== "") &&
-            (strval($getAlignmentList->getMinimumGoodMatchesSize()) !== "") &&
+            ($getAlignmentList->getMaximumPcrProductSize() !== "") &&
+            ($getAlignmentList->getMinimumPerfectMatchSize() !== "") &&
+            ($getAlignmentList->getMinimumGoodMatchesSize() !== "") &&
             (($getAlignmentList->getFlipReversePrimer() ? "true" : "false") !== "") &&
             ($getAlignmentList->getOutputFormat() !== "") ) {
             $alignmentList = $this->alignmentMatcher->get(
@@ -40,7 +40,7 @@ class GetAlignmentListHandler
                 "<br />",
                 preg_replace(
                     "/[\t]+/",
-                    "&emsp;",
+                    "&nbsp;&nbsp;&nbsp;&nbsp;",
                     $alignmentList
                 )
             );            

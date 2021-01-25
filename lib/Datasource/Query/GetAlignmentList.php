@@ -61,9 +61,9 @@ class GetAlignmentList implements QueryInterface
         string $genomeAssemblyReleaseVersion,
         string $forwardPrimer,
         string $reversePrimer,
-        int $maximumPcrProductSize,
-        int $minimumPerfectMatchSize,
-        int $minimumGoodMatchesSize,
+        string $maximumPcrProductSize,
+        string $minimumPerfectMatchSize,
+        string $minimumGoodMatchesSize,
         bool $flipReversePrimer,
         string $outputFormat
     ) {
@@ -98,17 +98,17 @@ class GetAlignmentList implements QueryInterface
         return $this->reversePrimer;
     }
 
-    public function getMaximumPcrProductSize(): int
+    public function getMaximumPcrProductSize(): string
     {
         return $this->maximumPcrProductSize;
     }
 
-    public function getMinimumPerfectMatchSize(): int
+    public function getMinimumPerfectMatchSize(): string
     {
         return $this->minimumPerfectMatchSize;
     }
 
-    public function getMinimumGoodMatchesSize(): int
+    public function getMinimumGoodMatchesSize(): string
     {
         return $this->minimumGoodMatchesSize;
     }
