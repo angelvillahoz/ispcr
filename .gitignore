@@ -23,3 +23,4 @@ html/node_modules/
 
 # VS Code files
 ispcr.code-workspace
+.vscode/launch.json

@@ -31,5 +31,5 @@ COPY --from=0 /go/src/isPcr /usr/local/bin
 EXPOSE 80
 VOLUME ["./assets"]
 
-WORKDIR ./cmd
+WORKDIR /cmd
 CMD ["./ispcrserver"]
