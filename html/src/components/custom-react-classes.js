@@ -261,7 +261,7 @@ class IsPcrForm extends React.Component {
                    name="flipReversePrimer"
                    onChange={e => this.setState({ selectedFlipReversePrimer: e.target.checked })}/><br />
             <br />
-            <label>OutputFormat:&nbsp;</label>            
+            <label>Output Format:&nbsp;</label>            
             <select placeholder="outputFormatsSelector" value={this.state.selectedOutputFormat} onChange={this.changeOutputFormat}>
 						  {this.state.outputFormats.map((e, key) => {
 							  return <option key="{key}">{e.name}</option>;
