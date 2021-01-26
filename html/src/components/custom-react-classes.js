@@ -203,7 +203,7 @@ class IsPcrForm extends React.Component {
 						  })}
 					  </select><br />
             <br />
-            <label>Forward Prime:&nbsp;</label><br />
+            <label>Forward Primer:&nbsp;</label><br />
             <textarea id="forwardPrimerId"
                       name="forwardPrimer"
                       required
@@ -212,7 +212,7 @@ class IsPcrForm extends React.Component {
                       value={this.state.forwardPrimer}
                       onChange={e => this.setState({ forwardPrimer: e.target.value })}></textarea><br />
             <br />
-            <label>Reverse Prime:&nbsp;</label><br />
+            <label>Reverse Primer:&nbsp;</label><br />
             <textarea id="reversePrimerId"
                       name="reversePrimer"
                       required
