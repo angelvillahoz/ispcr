@@ -54,5 +54,5 @@ func main() {
 		drosophilaMelanogasterGenomeReleaseVersion3File,
 		drosophilaMelanogasterGenomeReleaseVersion6File,
 		triboliumCastaneumGenomeReleaseVersionFile)
-	log.Fatal(http.ListenAndServe(":80", r))
+	log.Fatal(http.ListenAndServe(":8080", r))
 }

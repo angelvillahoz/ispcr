@@ -1,6 +1,6 @@
 # Configuration for the isPCR endpoint.
 ispcr:
-    url: 'ispcr_server:80'
+    url: 'ispcr_server:8080'
 
 # Credentials for the isPCR database.
 database:

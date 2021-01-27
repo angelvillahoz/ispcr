@@ -21,8 +21,8 @@ RUN apt-get update -y && \
         pgsql && \
     pecl install \
         mcrypt-1.0.4 \
-        yaml-2.2.0 \
-        xdebug-3.0.1 && \
+        yaml-2.2.1 \
+        xdebug-3.0.2 && \
     docker-php-ext-enable \
         mcrypt \
         yaml
