@@ -24,7 +24,7 @@ RUN mkdir /tmp/isPcr && \
     (cd /tmp/isPcr/isPcrSrc && MACHTYPE=x86_64 make HG_WARN="") && \
     mv /root/bin/x86_64/isPcr ./
 
-FROM alpine:3.12
+FROM alpine:3.13
 
 COPY --from=0 /go/src/main ./cmd/ispcrserver
 COPY --from=0 /go/src/isPcr /usr/local/bin

@@ -1,4 +1,4 @@
-FROM mariadb:10.3
+FROM mariadb:10.5
 ENV TZ=America/New_York
 # Copy the shell script for performing the schema backup.
 COPY schema_backup.sh /

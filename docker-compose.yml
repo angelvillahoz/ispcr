@@ -15,7 +15,7 @@ services:
         volumes:
             - ./go/ispcrserver/assets:/assets
     mariadb_server:
-        image: mariadb:10.3
+        image: mariadb:10.5
         # 2097152 = 2MB 
         #command: --group_concat_max_len=2097152
         ports:
