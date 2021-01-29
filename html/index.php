@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>In-Silico PCR Server</title>
     <script src="./node_modules/react/umd/react.production.min.js"></script>
     <script src="./node_modules/react-dom/umd/react-dom.production.min.js"></script>
     <script src="./node_modules/@babel/standalone/babel.min.js"></script>
     <script src="./node_modules/axios/dist/axios.min.js"></script>
-    <script src="./src/components/custom-react-classes.js" type="text/babel"></script>
+    <script src="./src/components/ispcr-react-classes.js" type="text/babel"></script>
 </head>
 <body>
 <div id="root"></div>
