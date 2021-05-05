@@ -186,7 +186,8 @@ class IsPcrForm extends React.Component {
     const {errors} = this.state;
     return ( 
       <div className="IsPcrForm">
-        <p>In-Silico PCR server</p>
+        <p>In-Silico PCR server with the <a href="http://genome.ucsc.edu/cgi-bin/hgPcr"
+                                            target="_blank">isPCR software</a> copyrighted by Jim Kent, used with permission</p>
         <div>
           <form onSubmit={this.handleSubmit}>
             <label>Species Scientific Name:&nbsp;</label>
