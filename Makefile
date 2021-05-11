@@ -22,6 +22,7 @@ help:
 	@ echo "                                      Beautifier and Fixer tool."
 	@ echo "  logs                                Make the logs directory for the ISPCR application"
 	@ echo "  node_modules-install                Install all the JavaScript libraries"
+	@ echo "  node_modules-upgrade                Upgrade all the JavaScript libraries installed"
 	@ echo "  php-libraries-reload                Reload the (existing and new) PHP libraries used by the"
 	@ echo "                                      BLAT application"
 	@ echo "  schema-backup                       Dump the current database schema to the db directory."
@@ -71,6 +72,9 @@ logs:
 
 node_modules-install: html/package.json
 	cd ./html && yarn add react react-dom axios @babel/standalone eslint
+
+node_modules-upgrade: html/package.json
+	cd ./html && yarn upgrade
 
 php-libraries-reload: composer.json
 	docker pull composer:latest
