@@ -29,7 +29,7 @@ FROM alpine:3.13
 COPY --from=0 /go/src/main ./cmd/ispcrserver
 COPY --from=0 /go/src/isPcr /usr/local/bin
 EXPOSE 8080
-VOLUME ["./assets"]
+VOLUME ["/assets"]
 
 WORKDIR /cmd
 CMD ["./ispcrserver"]
